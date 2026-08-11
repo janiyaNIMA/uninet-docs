@@ -369,16 +369,87 @@ Pushes the post to the top of targeted student feeds.
 }
 ```
 
-### 8.2 One-Click Recruitment Invitation Dispatch
-Sends an official recruitment invitation to the selected candidate.
+### 8.2 Update Candidate Pipeline Status (Review, Recruit, Ignore)
+Updates the pipeline stage status of a candidate application.
 
-* **Endpoint:** `POST /api/v1/recruitment/candidates/:candidateId/dispatch-invite`
+* **Endpoint:** `PUT /api/v1/recruitment/candidates/:candidateId/status` (or `POST /api/v1/recruitment/candidates/:candidateId/review`, `/recruit`, `/ignore`)
+* **Request Body:**
+```json
+{
+  "status": "Under Review" // Options: "Pending", "Under Review", "Recruited", "Ignored"
+}
+```
 
 #### Response `200 OK`
 ```json
 {
   "success": true,
-  "message": "Recruitment invitation dispatched successfully."
+  "message": "Candidate status updated to Under Review.",
+  "data": {
+    "id": 1,
+    "name": "Kavindi Bandara",
+    "status": "Under Review"
+  }
+}
+```
+
+### 8.3 One-Click Recruitment Invitation & Direct Recruit
+Recruits candidate or dispatches recruitment invitation.
+
+* **Endpoint:** `POST /api/v1/recruitment/candidates/:candidateId/recruit` (or `POST /api/v1/recruitment/candidates/:candidateId/dispatch-invite`)
+
+#### Response `200 OK`
+```json
+{
+  "success": true,
+  "message": "Candidate Kavindi Bandara has been successfully Recruited!",
+  "data": {
+    "id": 1,
+    "name": "Kavindi Bandara",
+    "status": "Recruited"
+  }
+}
+```
+
+### 8.4 Ignore Candidate Application
+Marks candidate application as ignored/passed.
+
+* **Endpoint:** `POST /api/v1/recruitment/candidates/:candidateId/ignore`
+
+#### Response `200 OK`
+```json
+{
+  "success": true,
+  "message": "Candidate Kavindi Bandara has been Ignored."
+}
+```
+
+### 8.5 Submit New Student Candidate Application
+Submits a student application for recruitment drives or committee positions.
+
+* **Endpoint:** `POST /api/v1/recruitment/candidates`
+* **Request Body:**
+```json
+{
+  "name": "Sahan Perera",
+  "email": "sahan@wusl.ac.lk",
+  "appliedFor": "Logistics OC Lead",
+  "academicBackground": "BSc Industrial Management (2nd Year)",
+  "skills": ["Logistics", "Budgeting", "Vendor Relations"],
+  "pastContributions": "Coordinator for Sports Meet 2025."
+}
+```
+
+#### Response `201 Created`
+```json
+{
+  "success": true,
+  "message": "Candidate application submitted successfully",
+  "data": {
+    "id": 6,
+    "name": "Sahan Perera",
+    "status": "Pending"
+  }
 }
 ```
 
